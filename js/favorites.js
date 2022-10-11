@@ -1,31 +1,37 @@
+export class GithubUser {
+  static search(username) {
+    const endpoint = `https://api.github.com/users/${username}`;
+
+    return fetch(endpoint)
+      .then(data => data.json())
+      .then(data => ({
+        login: data.login,
+        name: data.name,
+        public_repos: data.public_repos,
+        followers: data.followers,
+      }));
+  }
+}
+
+//classe que vai conter a logica dos dados e estruturação
 export class Favorites {
   constructor(root) {
     this.root = document.querySelector(root);
     this.load();
+
+    GithubUser.search('uzumaki').then(user => console.log(user));
   }
 
   load() {
-    this.entries = [
-      {
-        user_Login: 'robsonboscato',
-        user_Name: 'robsonboscato',
-        user_Repos: 25,
-        user_Followers: 9,
-      },
-      {
-        user_Login: 'filipedeschamps',
-        user_Name: 'Filipe Deschamps',
-        user_Repos: 5555,
-        user_Followers: 999999,
-      },
-      {
-        user_Login: 'naruto',
-        user_Name: 'dattebayo',
-        user_Repos: 32,
-        user_Followers: 22,
-      },
-    ];
+    const entries = JSON.parse(localStorage.getItem('@github-favorites')) || [];
+
+    this.entries = [];
   }
+
+  async add(username) {
+    const user = await GithubUser.search(username);
+  }
+
   delete(user) {
     const filteredEntries = this.entries.filter(
       entry => entry.user_Login !== user.user_Login
@@ -37,6 +43,7 @@ export class Favorites {
   }
 }
 
+//classe que vai criar a visualizacao e eventos do HTML
 export class FavoritesView extends Favorites {
   constructor(root) {
     super(root);
@@ -45,7 +52,17 @@ export class FavoritesView extends Favorites {
 
     this.update();
 
-    this.createRow();
+    this.addUser();
+  }
+
+  addUser() {
+    const addButton = this.root.querySelector('.search button');
+
+    addButton.onclick = () => {
+      const { value } = this.root.querySelector('.search input');
+
+      this.add(value);
+    };
   }
 
   createRow() {
