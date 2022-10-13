@@ -12,14 +12,12 @@ Detalhamento das etapas realizadas:
   <li>realizado implementação da parte HTML primeiro;</li>
   <li>Customização/Estilização da parte de Front com CSS;</li>
   <li>Adicionado a modularização e JS;</li>
-  <li></li>
-  <li></li>
+  <li>Finalizado a integração com a API</li>
+  
 </ul>
 
 Propostas para implementações futuras:
 
 <ul>
-  <li></li>
-  <li></li>
-  <li></li>
+  <li>Usar para desenvolver outros projetos como filmes, séries, jogos</li>
 </ul>
